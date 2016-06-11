@@ -2,11 +2,11 @@ import React from 'react';
 import Navbar from '../../ui/components/Navbar.jsx';
 import Logo from '../../ui/components/Logo.jsx';
 
-export const Layout =  ({content}) => (
+export const WelcomeLayout = ({content}) => (
   <div className="app-root">
     <br />
     <Logo />
-    <Navbar />
+    <br />
     <div className="container">
       {content}
     </div>
