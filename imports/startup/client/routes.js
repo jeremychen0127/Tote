@@ -24,7 +24,7 @@ FlowRouter.route('/closet', {
 FlowRouter.route('/recommendations', {
   name: 'recommendations',
   action() {
-    mount(Layout, {content: <Recommendations />});
+    mount(Layout, {content: <div />});
   }
 });
 
