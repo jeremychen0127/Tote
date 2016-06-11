@@ -23,3 +23,5 @@ kadira:flow-router
 aldeed:collection2
 materialize:materialize
 react-meteor-data
+accounts-google
+benjaminrh:event-hooks
