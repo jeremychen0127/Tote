@@ -58,11 +58,11 @@ if (Meteor.isServer) {
       let newUserProfile = {};
       newUserProfile.userId = userId;
       newUserProfile.userName = 'N/A';
-      newUserProfile.gender = 'N/A';
-      newUserProfile.height = '0';
-      newUserProfile.weight = '0';
-      newUserProfile.size = 'N/A';
-      newUserProfile.age = '0';
+      newUserProfile.gender = '';
+      newUserProfile.height = 0;
+      newUserProfile.weight = 0;
+      newUserProfile.size = '';
+      newUserProfile.age = 0;
       newUserProfile.ethnicGroup = 'Other';
       newUserProfile.isQuestionnaireTaken = false;
       newUserProfile._id = UserProfileCollection.insert(newUserProfile);
