@@ -41,6 +41,9 @@ if (Meteor.isServer) {
     ethnicGroup: {
       type: String,
       allowedValues: ['White','Black','Chinese','Japanese','Korean','Indian','Latino','Arab','Other']
+    },
+    isQuestionnaireTaken: {
+      type: Boolean
     }
   });
 
