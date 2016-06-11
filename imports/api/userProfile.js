@@ -10,33 +10,30 @@ if (Meteor.isServer) {
       type: String,
       regEx: SimpleSchema.RegEx.Id
     },
-    type: {
-      type: String,
-      regEx: /.*\S.*/
-    },
     userId: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Id
+      type: String
     },
     userName: {
       type: String,
-      max: 100,
-      regEx: /.*\S.*/
+      max: 100
+    },
+    age:{
+      type: Number
     },
     gender: {
       type: String,
-      allowedValues: ['Male', 'Female'],
+      allowedValues: ['Male', 'Female','N/A'],
       optional: true
     },
     height: {
-      type: Number,
-      min: 40,
-      max: 300
+      type: Number
+
     },
     weight: {
-      type: Number,
-      min: 10,
-      max: 300
+      type: Number
+    },
+    size: {
+      type: String
     },
     ethnicGroup: {
       type: String,
@@ -54,63 +51,27 @@ if (Meteor.isServer) {
   });
 
   Meteor.methods({
-    "tote.userProfile.addProfile"(profileObject) {
-      if (!Meteor.userId()) {
-        throw new Meteor.Error('unauthorized');
-      }
-      UserProfileCollection.insert(profileObject, function (error, _id) {
-        if (error) {
-          throw new Meteor.Error(error);
-        } else {
-          profileObject._id = _id;
-        }
-      });
+    "tote.userProfile.addProfile"(userId) {
+      //if (!Meteor.userId()) {
+      //  throw new Meteor.Error('unauthorized');
+     // }
+      let newUserProfile = {};
+      newUserProfile.userId = userId;
+      newUserProfile.userName = 'N/A';
+      newUserProfile.gender = 'N/A';
+      newUserProfile.height = '0';
+      newUserProfile.weight = '0';
+      newUserProfile.size = 'N/A';
+      newUserProfile.age = '0';
+      newUserProfile.ethnicGroup = 'Other';
+      newUserProfile.isQuestionnaireTaken = false;
+      newUserProfile._id = UserProfileCollection.insert(newUserProfile);
     },
-    "tote.userProfile.updateName"(profileObjectId, name) {
-      if (!Meteor.userId()) {
-        throw new Meteor.Error('unauthorized');
-      }
-      UserProfileCollection.update(profileObjectId, {$set: {userName: name}}, function (error, numDocChanged) {
-        if (error) {
-          throw new Meteor.Error(error);
-        }
-      });
-    },
-    "tote.userProfile.updateGender"(profileObjectId, gender) {
-      if (!Meteor.userId()) {
-        throw new Meteor.Error('unauthorized');
-      }
-      UserProfileCollection.update(profileObjectId, {$set: {gender: gender}}, function (error, numDocChanged) {
-        if (error) {
-          throw new Meteor.Error(error);
-        }
-      });
-    },
-    "tote.userProfile.updateHeight"(profileObjectId, height) {
-      if (!Meteor.userId()) {
-        throw new Meteor.Error('unauthorized');
-      }
-      UserProfileCollection.update(profileObjectId, {$set: {height: height}}, function (error, numDocChanged) {
-        if (error) {
-          throw new Meteor.Error(error);
-        }
-      });
-    },
-    "tote.userProfile.updateWeight"(profileObjectId, weight) {
-      if (!Meteor.userId()) {
-        throw new Meteor.Error('unauthorized');
-      }
-      UserProfileCollection.update(profileObjectId, {$set: {weight: weight}}, function (error, numDocChanged) {
-        if (error) {
-          throw new Meteor.Error(error);
-        }
-      });
-    },
-    "tote.userProfile.updateEthnic"(profileObjectId, ethnic) {
-      if (!Meteor.userId()) {
-        throw new Meteor.Error('unauthorized');
-      }
-      UserProfileCollection.update(profileObjectId, {$set: {ethnicGroup: ethnic}}, function (error, numDocChanged) {
+    "tote.userProfile.updateInfo"(userId, height, weight, ethnicity, size, age) {
+      //if (!Meteor.userId()) {
+       // throw new Meteor.Error('unauthorized');
+      //},weight:weight,ethnicGroup: ethnicity, size: size, age: age
+      UserProfileCollection.update({userId : userId}, {$set: {height: height,weight:weight,ethnicGroup: ethnicity, size: size, age: age, isQuestionnaireTaken: true}}, function (error, numDocChanged) {
         if (error) {
           throw new Meteor.Error(error);
         }
