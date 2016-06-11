@@ -53,7 +53,7 @@ if (Meteor.isServer) {
   Meteor.methods({
     "tote.userProfile.addProfile"(userId) {
       //if (!Meteor.userId()) {
-      //  throw new Meteor.Error('unauthorized');
+      //     throw new Meteor.Error('unauthorized');
      // }
       let newUserProfile = {};
       newUserProfile.userId = userId;
