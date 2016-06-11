@@ -5,7 +5,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Layout } from '../../ui/layouts/Layout';
 import { WelcomeLayout } from '../../ui/layouts/WelcomeLayout';
 import Welcome from '../../ui/pages/Welcome';
-//import Recommendations from '../../ui/pages/Recommendations';
+import Recommendations from '../../ui/pages/Recommendations';
 
 FlowRouter.route('/', {
   name: 'index',
@@ -24,7 +24,7 @@ FlowRouter.route('/closet', {
 FlowRouter.route('/recommendations', {
   name: 'recommendations',
   action() {
-    mount(Layout, {content: <div />});
+    mount(Layout, {content: <Recommendations />});
   }
 });
 
