@@ -67,11 +67,9 @@ if (Meteor.isServer) {
       newUserProfile.isQuestionnaireTaken = false;
       newUserProfile._id = UserProfileCollection.insert(newUserProfile);
     },
-    "tote.userProfile.updateInfo"(userId, height, weight, ethnicity, size, age) {
-      //if (!Meteor.userId()) {
-       // throw new Meteor.Error('unauthorized');
-      //},weight:weight,ethnicGroup: ethnicity, size: size, age: age
-      UserProfileCollection.update({userId : userId}, {$set: {height: height,weight:weight,ethnicGroup: ethnicity, size: size, age: age, isQuestionnaireTaken: true}}, function (error, numDocChanged) {
+    "tote.userProfile.updateInfo"(height, weight, ethnicity, size, age) {
+
+      UserProfileCollection.update({userId : Meteor.userId()}, {$set: {height: height,weight:weight,ethnicGroup: ethnicity, size: size, age: age, isQuestionnaireTaken: true}}, function (error, numDocChanged) {
         if (error) {
           throw new Meteor.Error(error);
         }
