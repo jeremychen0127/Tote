@@ -20,3 +20,7 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 accounts-ui
 accounts-password
 kadira:flow-router
+meteorhacks:npm
+
+
+npm-container
