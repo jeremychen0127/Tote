@@ -6,6 +6,7 @@ export const WelcomeLayout = ({content}) => (
   <div className="app-root">
     <br />
     <Logo />
+    <br />
     <div className="container">
       {content}
     </div>
