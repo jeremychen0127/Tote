@@ -43,6 +43,13 @@ class Recommendations extends Component {
       age: -1,
       gender: '',
       femaleEveryday: '',
+      femaleShoes: '',
+      femaleLocation: '',
+      femaleBrunch: '',
+      femaleBags: '',
+      femaleCelebrity: '',
+      femaleBodyShape: '',
+      femaleShoeType: '',
       currentStep: 0,
       finalStep: -1,
     };
@@ -78,6 +85,27 @@ class Recommendations extends Component {
 
     this.handleFemaleEverydayChange = (event) => {
       this.setState({femaleEveryday: event.target.value});
+    }
+    this.handleFemaleShoesChange = (event)=> {
+        this.setState({femaleShoes: event.target.value});
+    }
+    this.handleFemaleLocationChange = (event)=> {
+        this.setState({femaleLocation: event.target.value});
+    }
+    this.handleFemaleBrunchChange = (event) => {
+        this.setState({femaleBrunch: event.target.value});
+    }
+    this.handleFemaleBagsChange = (event) => {
+        this.setState({femaleBags: event.target.value});
+    }
+    this.handleFemaleCelebrityChange = (event) => {
+        this.setState({femaleCelebrity: event.target.value});
+    }
+    this.handleFemaleBodyShapeChange = (event) => {
+        this.setState({femaleBodyShape: event.target.value});
+    }
+    this.handleFemaleShoeTypeChange = (event) => {
+        this.setState({femaleShoeType: event.target.value});
     }
 
     this.isInputValid = () => {
@@ -144,6 +172,27 @@ class Recommendations extends Component {
     } else if (this.state.gender === 'female') {
       if (this.state.currentStep === 1) {
         return <FemaleEverydayQuestion handleFemaleEverydayChange={this.handleFemaleEverydayChange}/>
+      }
+      else if (this.state.currentStep == 2) {
+        return <FemaleShoesQuestion handleFemaleShoesChange={this.handleFemaleShoesChange}/>
+      }
+      else if (this.state.currentStep == 3) {
+        return <FemaleLocationQuestion handleFemaleLocationChange={this.handleFemaleLocationChange}/>
+      }
+      else if (this.state.currentStep == 4) {
+        return <FemaleBrunchQuestion handleFemaleBrunchChange={this.handleFemaleBrunchChange}/>
+      }
+      else if (this.state.currentStep == 5) {
+        return <FemaleBagsQuestion handleFemaleBagsChange={this.handleFemaleBagsChange}/>
+      }
+      else if (this.state.currentStep == 6) {
+        return <FemaleCelebrityQuestion handleFemaleCelebrityChange = {this.handleFemaleCelebrityChange}/>
+      }
+      else if (this.state.currentStep == 7) {
+        return <FemaleBodyShapeQuestion handleFemaleBodyShapeChange = {this.handleFemaleBodyShapeChange}/>
+      }
+      else if (this.state.currentStep == 8) {
+        return <FemaleShoeTypeQuestion handleFemaleShoeTypeChange = {this.handleFemaleShoeTypeChange}/>
       }
     }
   }

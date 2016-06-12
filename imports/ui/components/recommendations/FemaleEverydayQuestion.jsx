@@ -3,14 +3,14 @@ import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 
-const path = '/img/';
+const path = '/img/everyday/';
 const pictures = [
-  'tomboy',
+  'Tomboy',
   'sexy',
-  'cute',
-  'chic',
-  'punc',
-  'sophisticated'
+  'Cute',
+  'boho',
+  'Punk',
+  'Sophisticated'
 ];
 const pictureFileExt = '.png';
 
@@ -18,6 +18,7 @@ export default class FemaleEverydayQuestion extends Component {
   renderGrids() {
     let grids = [];
     let pictureIndex = 0;
+    <h1>Which outfit most closely resembles your daily style?</h1>
     while (pictureIndex < pictures.length) {
       grids.push(
         <GridTile
