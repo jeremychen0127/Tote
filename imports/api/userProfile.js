@@ -65,9 +65,9 @@ if (Meteor.isServer) {
       newUserProfile.isQuestionnaireTaken = false;
       newUserProfile._id = UserProfileCollection.insert(newUserProfile, {removeEmptyStrings: false});
     },
-    "tote.userProfile.updateInfo": function(height, weight, ethnicity, size, age) {
+    "tote.userProfile.updateInfo": function(height, weight, ethnicity, size, age, gender) {
 
-      UserProfileCollection.update({userId : Meteor.userId()}, {$set: {height: height,weight:weight,ethnicGroup: ethnicity, size: size, age: age, isQuestionnaireTaken: true}}, function (error, numDocChanged) {
+      UserProfileCollection.update({userId : Meteor.userId()}, {$set: {height: height,weight:weight,ethnicGroup: ethnicity, size: size, age: age, gender:gender, isQuestionnaireTaken: true}}, function (error, numDocChanged) {
         if (error) {
           throw new Meteor.Error(error);
         }

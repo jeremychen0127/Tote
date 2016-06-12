@@ -8,8 +8,4 @@ if (Meteor.isServer) {
       Meteor.call('tote.userProfile.addProfile', userId);
     }
   }
-
-  Hooks.onLoggedOut = function (userId) {
-    FlowRouter.go('index');
-  }
 }

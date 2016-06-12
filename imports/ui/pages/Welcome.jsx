@@ -13,16 +13,14 @@ const styles = {
 };
 
 class Welcome extends Component {
-  constructor(props) {
-    super(props);
-    this.handleSelectGender = (event) => {
-      Meteor.call('tote.userProfile.updateGender', event.target.value);
-      FlowRouter.go('recommendations');
-    }
-  }
-
   getChildContext() {
     return {muiTheme: getMuiTheme(baseTheme)};
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentUserId) {
+      FlowRouter.go('/recommendations');
+    }
   }
 
   render() {
@@ -33,25 +31,7 @@ class Welcome extends Component {
               <AccountsUIWrapper />
             </div>
           :
-            <div>
-              <br />
-              <div className="row">
-                <div className="col offset-m1 m4 s12 hoverable center genderButton" style={styles.genderButton}>
-                  <Paper value="male" onClick={this.handleSelectGender}>
-                    <br /><br />
-                    <h2>Male</h2>
-                    <br /><br />
-                  </Paper>
-                </div>
-                <div className="col offset-m2 m4 s12 hoverable center genderButton" style={styles.genderButton}>
-                  <Paper value="female" onClick={this.handleSelectGender}>
-                    <br /><br />
-                    <h2>Female</h2>
-                    <br /><br />
-                  </Paper>
-                </div>
-              </div>
-            </div>
+            ''
         }
       </div>
     );
