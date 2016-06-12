@@ -4,55 +4,53 @@ import { HTTP } from "meteor/http";
 var hpeAPIKey = "dc9a8b7d-8413-4615-8d28-b731ec01b899";
 var clarifaiID = "WfikzkWvhIFgs7BXKq01pNeYyklRTCPELYqNcwBF";
 var clarifaiSecret = "eJn_t3-WfzeGY37diKxTruPmvlN-OB--zuPzsPLn";
-var clarifaiToken = "";
 var clarifaiBaseUrl = "https://api.clarifai.com/v1/";
-Future = Npm.require('fibers/future');
 
+var imageUrl = "http://www.fellsman.org.uk/wp-content/uploads/2013/04/POLO-SHIRT-ROYAL-BLUE.jpg";
 
-Meteor.methods({
-  "tote.imageRecog.getAccessToken" : function() {
+getAccessToken(imageUrl);
+
+var getAccessToken = function(imgUrl) {
+    var clarifaiToken = "";
     var tokenUrl = "https://api.clarifai.com/v1/token";
-    var fut = new Future();
     console.log(tokenUrl);
     var data = {
       grant_type: "client_credentials",
       client_id: clarifaiID,
       client_secret: clarifaiSecret
     };
-    var headers = {
+    /*var headers = {
       'Content-Type': 'form-data'
-    };
+    };*/
 
     HTTP.post(tokenUrl, {data: data, headers : headers}, function(err,res) {
       console.log("hello");
       if (err) {
-        fut.throw(err);
+        console.log(err);
       } else {
         console.log(clarifaiToken);
-        clarifaiToken = fut.return(res);
+        sendClarifaiRequest(imgUrl,clarifaiToken)
       }
     });
-    return fut.wait();
-  },
-  "tote.imageRecog.postClarifaiRequest": function(imgUrl) {
-    var fut = new Future();
+  } 
+
+var sendClarifaiRequest = function(imgUrl, token) {
     var tagUrl = clarifaiBaseUrl + "tag";
     var tags = [];
     var data = {
       "url" : imgUrl
     }
     var headers = {
-      "Authorization": 'Bearer '+ accessToken
+      "Authorization": 'Bearer '+ token
     }
-    console.log("url: " + imgUrl);
+
     HTTP.post(tagUrl, {"data": data, "headers": headers}, function(err, res) {
       if (err) {
-        fut.throw(err);
+        console.log(err);
       } else {
-        tags = fut.return(res);
         console.log(tags);
       }
     });
-    return fut.wait();
-  }
-});
+
+}
+
