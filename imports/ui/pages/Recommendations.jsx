@@ -57,9 +57,9 @@ class Recommendations extends Component {
     this.handleQuestionnaireSubmit = this.handleQuestionnaireSubmit.bind(this);
 
     this.handleQuestionnaireNext = () => {
-      if (this.state.currentStep === 0) {
-        Meteor.call("tote.userProfile.updateInfo", this.state.height, this.state.weight, this.state.ethnicity, this.state.size, this.state.age, this.state.gender);
-      }
+//      if (this.state.currentStep === 0) {
+//        Meteor.call("tote.userProfile.updateInfo", this.state.height, this.state.weight, this.state.ethnicity, this.state.size, this.state.age, this.state.gender);
+//      }
       this.setState({currentStep: this.state.currentStep + 1});
     }
 
