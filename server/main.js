@@ -5,6 +5,7 @@ import '../imports/api/havenondemand';
 import '../imports/api/clarifai';
 import '../imports/api/saveAWS';
 import '../imports/api/fashionItem';
+import '../imports/api/styleItem';
 
 
 
