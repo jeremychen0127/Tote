@@ -22,12 +22,10 @@ if (Meteor.isServer) {
     },
     gender: {
       type: String,
-      allowedValues: ['Male', 'Female','N/A'],
-      optional: true
+      allowedValues: ['Male', 'Female']
     },
     height: {
       type: Number
-
     },
     weight: {
       type: Number
@@ -44,7 +42,7 @@ if (Meteor.isServer) {
     }
   });
 
-  UserProfileCollection.attachSchema(UserProfileCollection.schema);
+//  UserProfileCollection.attachSchema(UserProfileCollection.schema);
 
   Meteor.publish("tote.userProfile", function () {
     return UserProfileCollection.find({});
@@ -65,7 +63,7 @@ if (Meteor.isServer) {
       newUserProfile.age = 0;
       newUserProfile.ethnicGroup = 'Other';
       newUserProfile.isQuestionnaireTaken = false;
-      newUserProfile._id = UserProfileCollection.insert(newUserProfile);
+      newUserProfile._id = UserProfileCollection.insert(newUserProfile, {removeEmptyStrings: false});
     },
     "tote.userProfile.updateInfo": function(height, weight, ethnicity, size, age) {
 
@@ -75,17 +73,17 @@ if (Meteor.isServer) {
         }
       });
     },
-    "tote.userProfile.updateName": function(userId, name) {
+    "tote.userProfile.updateName": function(name) {
 
-      UserProfileCollection.update({userId : userId}, {$set: {name: name}}, function (error, numDocChanged) {
+      UserProfileCollection.update({userId : Meteor.userId()}, {$set: {userName: name}}, function (error, numDocChanged) {
         if (error) {
           throw new Meteor.Error(error);
         }
       });
     },
-    "tote.userProfile.updateGender": function(userId, gender) {
+    "tote.userProfile.updateGender": function(gender) {
 
-      UserProfileCollection.update({userId : userId}, {$set: {gender: gender}}, function (error, numDocChanged) {
+      UserProfileCollection.update({userId : Meteor.userId()}, {$set: {gender: gender}}, function (error, numDocChanged) {
         if (error) {
           throw new Meteor.Error(error);
         }
