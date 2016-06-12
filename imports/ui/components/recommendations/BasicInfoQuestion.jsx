@@ -93,7 +93,7 @@ export default class BasicInfoQuestion extends Component {
         <div className="row">
           <div className="col m6">
             <label htmlFor="age" className="col m6 questionnaireLabel" style={styles.fieldLabel}>Age</label>
-            <input placeholder="e.g. 25" id="weight" type="number" class="validate" onChange={this.props.handleAgeChange}/>
+            <input placeholder="e.g. 25" id="age" type="number" class="validate" onChange={this.props.handleAgeChange}/>
           </div>
           <label htmlFor="gender" className="col m6 questionnaireLabel" style={styles.fieldLabel}>Gender</label>
           <div>

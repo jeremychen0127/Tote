@@ -4,24 +4,34 @@ import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 
 const path = '/img/';
-const category = 'everyday';
-const numPictures = 6;
+const pictures = [
+  'tomboy',
+  'sexy',
+  'cute',
+  'chic',
+  'punc',
+  'sophisticated'
+];
 const pictureFileExt = '.png';
 
 export default class FemaleEverydayQuestion extends Component {
   renderGrids() {
     let grids = [];
-    let pictureIndex = 1;
-    while (pictureIndex <= numPictures) {
+    let pictureIndex = 0;
+    while (pictureIndex < pictures.length) {
       grids.push(
         <GridTile
+          key={pictures[pictureIndex]}
           cellHeight={400}
-          key={category + pictureIndex}
           title=''
           actionPosition="left"
           titlePosition="top"
           actionIcon={<IconButton><StarBorder color="red" /></IconButton>}>
-          <img src={path + category + pictureIndex + pictureFileExt} />
+            <img
+              className="pictureGrid"
+              src={path + pictures[pictureIndex] + pictureFileExt}
+              value={pictures[pictureIndex]}
+              onClick={this.props.handleFemaleEverydayChange}/>
         </GridTile>
       );
       pictureIndex++;
@@ -39,4 +49,8 @@ export default class FemaleEverydayQuestion extends Component {
       </div>
     );
   }
+}
+
+FemaleEverydayQuestion.propTypes = {
+  handleFemaleEverydayChange: React.PropTypes.func.isRequired
 }

@@ -42,8 +42,9 @@ class Recommendations extends Component {
       size: '',
       age: -1,
       gender: '',
+      femaleEveryday: '',
       currentStep: 0,
-      finalStep: 0,
+      finalStep: -1,
     };
 
     this.handleQuestionnaireSubmit = this.handleQuestionnaireSubmit.bind(this);
@@ -68,11 +69,15 @@ class Recommendations extends Component {
 
     this.handleGenderChange = (event, index, value) => {
       if (value === 'male') {
-        this.setState({finalStep: 0});
+        this.setState({finalStep: 7});
       } else {
-        this.setState({finalStep: 0});
+        this.setState({finalStep: 9});
       }
       this.setState({gender: value});
+    }
+
+    this.handleFemaleEverydayChange = (event) => {
+      this.setState({femaleEveryday: event.target.value});
     }
 
     this.isInputValid = () => {
@@ -138,7 +143,7 @@ class Recommendations extends Component {
         handleGenderChange={this.handleGenderChange}/>
     } else if (this.state.gender === 'female') {
       if (this.state.currentStep === 1) {
-        return <FemaleEverydayQuestion />
+        return <FemaleEverydayQuestion handleFemaleEverydayChange={this.handleFemaleEverydayChange}/>
       }
     }
   }
@@ -151,6 +156,11 @@ class Recommendations extends Component {
             label="Later"
             primary={true}
             onTouchTap={this.handleQuestionnaireClose}
+          />,
+          <FlatButton
+            label="Back"
+            primary={true}
+            onTouchTap={this.handleQuestionnairePrev}
           />,
           <FlatButton
             label="Submit"
@@ -200,6 +210,7 @@ class Recommendations extends Component {
             open={this.state.questionnaireOpen}
             autoScrollBodyContent={true}>
               {this.renderQuestions()}
+              {this.renderStepper()}
           </Dialog>
         </div>
       );
