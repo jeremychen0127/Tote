@@ -24,3 +24,4 @@ materialize:materialize
 react-meteor-data
 accounts-google
 differential:event-hooks
+edgee:slingshot
