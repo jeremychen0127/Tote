@@ -51,7 +51,7 @@ if (Meteor.isServer) {
   });
 
   Meteor.methods({
-    "tote.userProfile.addProfile"(userId) {
+    "tote.userProfile.addProfile": function(userId) {
       //if (!Meteor.userId()) {
       //     throw new Meteor.Error('unauthorized');
      // }
@@ -67,9 +67,25 @@ if (Meteor.isServer) {
       newUserProfile.isQuestionnaireTaken = false;
       newUserProfile._id = UserProfileCollection.insert(newUserProfile);
     },
-    "tote.userProfile.updateInfo"(height, weight, ethnicity, size, age) {
+    "tote.userProfile.updateInfo": function(height, weight, ethnicity, size, age) {
 
       UserProfileCollection.update({userId : Meteor.userId()}, {$set: {height: height,weight:weight,ethnicGroup: ethnicity, size: size, age: age, isQuestionnaireTaken: true}}, function (error, numDocChanged) {
+        if (error) {
+          throw new Meteor.Error(error);
+        }
+      });
+    },
+    "tote.userProfile.updateName": function(userId, name) {
+
+      UserProfileCollection.update({userId : userId}, {$set: {name: name}}, function (error, numDocChanged) {
+        if (error) {
+          throw new Meteor.Error(error);
+        }
+      });
+    },
+    "tote.userProfile.updateGender": function(userId, gender) {
+
+      UserProfileCollection.update({userId : userId}, {$set: {gender: gender}}, function (error, numDocChanged) {
         if (error) {
           throw new Meteor.Error(error);
         }
