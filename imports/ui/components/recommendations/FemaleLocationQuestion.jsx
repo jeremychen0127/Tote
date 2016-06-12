@@ -31,7 +31,7 @@ export default class FemaleLocationQuestion extends Component {
               className="pictureGrid"
               src={path + pictures[pictureIndex] + pictureFileExt}
               value={pictures[pictureIndex]}
-              onClick={this.props.handleFemaleELocationChange}/>
+              onClick={this.props.handleFemaleLocationChange}/>
         </GridTile>
       );
       pictureIndex++;

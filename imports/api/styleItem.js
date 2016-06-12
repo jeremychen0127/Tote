@@ -29,12 +29,13 @@ if (Meteor.isServer) {
   StyleItemCollection.attachSchema(StyleItemCollection.schema);
 
   Meteor.methods({
-    "tote.fashionStyleItem.addItem": function(fashionStyle,url) {
+    "tote.fashionStyleItem.addItem": function(fashionStyle,category,url) {
       //if (!Meteor.userId()) {
       //     throw new Meteor.Error('unauthorized');
       // }
       let newItem = {};
       newItem.fashionStyle = fashionStyle;
+      newItem.category =
       newItem.itemUrl = url;
       newItem._id = StyleItemCollection.insert(newItem);
     },

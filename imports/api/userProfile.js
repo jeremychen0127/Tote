@@ -67,7 +67,15 @@ if (Meteor.isServer) {
     },
     "tote.userProfile.updateInfo": function(height, weight, ethnicity, size, age, gender) {
 
-      UserProfileCollection.update({userId : Meteor.userId()}, {$set: {height: height,weight:weight,ethnicGroup: ethnicity, size: size, age: age, gender:gender, isQuestionnaireTaken: true}}, function (error, numDocChanged) {
+      UserProfileCollection.update({userId : Meteor.userId()}, {$set: {height: height,weight:weight,ethnicGroup: ethnicity, size: size, age: age, gender:gender}}, function (error, numDocChanged) {
+        if (error) {
+          throw new Meteor.Error(error);
+        }
+      });
+    },
+    "tote.userProfile.updateIsQuestionnaireTaken": function() {
+
+      UserProfileCollection.update({userId : Meteor.userId()}, {$set: {isQuestionnaireTaken: true}}, function (error, numDocChanged) {
         if (error) {
           throw new Meteor.Error(error);
         }
