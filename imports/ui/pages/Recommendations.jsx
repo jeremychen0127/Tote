@@ -109,7 +109,21 @@ class Recommendations extends Component {
     }
 
     this.isInputValid = () => {
-      return this.state.height > 0 && this.state.weight > 0 && !!this.state.ethnicity && !!this.state.size && this.state.age > 0 && !!this.state.gender;
+      return
+        this.state.height > 0 &&
+        this.state.weight > 0 &&
+        !!this.state.ethnicity &&
+        !!this.state.size &&
+        this.state.age > 0 &&
+        !!this.state.gender &&
+        !!this.state.femaleEveryday &&
+        !!this.state.femaleShoes &&
+        !!this.state.femaleLocation &&
+        !!this.state.femaleBrunch &&
+        !!this.state.femaleBags &&
+        !!this.state.femaleCelebrity &&
+        !!this.state.femaleBodyShape &&
+        !!this.state.femaleShoeType;
     }
   }
 
@@ -118,6 +132,12 @@ class Recommendations extends Component {
   }
 
   handleQuestionnaireSubmit() {
+    let chic = 0;
+    let punc = 0;
+    let tomboy = 0;
+    let sophisticated = 0;
+    let sexy = 0;
+    let cute = 0;
     Meteor.call("tote.userProfile.updateInfo", this.state.height, this.state.weight, this.state.ethnicity, this.state.size, this.state.age, this.state.gender);
     this.setState({questionnaireOpen: false});
   }
