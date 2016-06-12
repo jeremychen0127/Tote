@@ -163,7 +163,7 @@ export default createContainer(() => {
   let handle = Meteor.subscribe('tote.userProfile');
   if (handle.ready()) {
     if (Meteor.userId()) {
-      let currentProfile = UserProfileCollection.find({userId: Meteor.userId()});
+      let currentProfile = UserProfileCollection.find({userId: Meteor.userId()}).fetch();
       return {currentProfile: currentProfile};
     }
   }
