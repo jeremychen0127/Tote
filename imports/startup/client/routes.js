@@ -8,6 +8,7 @@ import Welcome from '../../ui/pages/Welcome';
 import Closet from '../../ui/pages/Closet';
 import Recommendations from '../../ui/pages/Recommendations';
 import AWSDemo from '../../ui/pages/AWSDemo';
+import Diary from '../../ui/pages/Diary';
 
 FlowRouter.route('/', {
   name: 'index',
@@ -40,6 +41,6 @@ FlowRouter.route('/AWSDemo', {
 FlowRouter.route('/diary', {
   name: 'diary',
   action() {
-    mount(Layout, {content: <div />});
+    mount(Layout, {content: <Diary />});
   }
 });
