@@ -5,8 +5,8 @@ Slingshot.fileRestrictions("myImageUploads", {
 });
 
 Slingshot.createDirective("myImageUploads", Slingshot.S3Storage, {
-  AWSAccessKeyId: "AKIAI3GQW3YUVTCSLE5Q",
-  AWSSecretAccessKey: "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",
+  AWSAccessKeyId: "AKIAIK2VPHGGJE2YYBVQ",
+  AWSSecretAccessKey: "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",
   bucket: "tote-pictures",
   acl: "public-read",
   region: "us-west-2",
