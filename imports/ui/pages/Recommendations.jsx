@@ -11,6 +11,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import CircularProgress from 'material-ui/CircularProgress';
+import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 
 import { UserProfileCollection } from '../../api/userProfile';
 
@@ -24,12 +26,13 @@ class Recommendations extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionnaireOpen: true,
+      questionnaireOpen: props.currentProfile ? !props.currentProfile.isQuestionnaireTaken : false,
       height: -1,
       weight: -1,
       ethnicity: '',
       size: '',
       age: -1,
+      currentStep: 0,
     };
 
     this.handleQuestionnaireOpen = () => this.setState({questionnaireOpen: true});
@@ -62,6 +65,40 @@ class Recommendations extends Component {
     this.setState({questionnaireOpen: false});
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({questionnaireOpen: !nextProps.currentProfile.isQuestionnaireTaken});
+  }
+
+  renderSteps() {
+    let numSteps = 0;
+    if (this.props.currentProfile.gender === 'male') {
+      numSteps = 6;
+    } else if (this.props.currentProfile.gender === 'female') {
+      numSteps = 9;
+    }
+
+    let steps = [];
+
+    while (numSteps) {
+      steps.push(
+        <Step>
+          <StepLabel></StepLabel>
+        </Step>
+      );
+      numSteps--;
+    }
+
+    return steps;
+  }
+
+  renderStepper() {
+    return (
+      <Stepper activeStep={this.state.currentStep}>
+          {this.renderSteps()}
+      </Stepper>
+    );
+  }
+
   render() {
     const actions = [
       <FlatButton
@@ -77,14 +114,20 @@ class Recommendations extends Component {
       />,
     ];
 
-    return (
-      <div>
-        { this.props.currentProfile && this.props.currentProfile.isQuestionnaireTaken ?
-          <div>
-            <br />
-            <RaisedButton label="Redo Questionnaire" onTouchTap={this.handleQuestionnaireOpen} />
-          </div>
-          :
+    if (this.props.doneLoading) {
+      return (
+        <div>
+          { this.props.currentProfile && this.props.currentProfile.isQuestionnaireTaken ?
+            <div className="center">
+              <br />
+              <RaisedButton label="Redo Questionnaire" onTouchTap={this.handleQuestionnaireOpen} />
+            </div>
+            :
+            <div className="center">
+              <br />
+              <RaisedButton label="Complete Questionnaire" onTouchTap={this.handleQuestionnaireOpen} />
+            </div>
+          }
           <Dialog
             title="Determine Your Style!"
             titleClassName="center"
@@ -148,10 +191,14 @@ class Recommendations extends Component {
                   <input placeholder="e.g. 25" id="weight" type="number" class="validate" onChange={this.handleAgeChange}/>
                 </div>
               </div>
+
+              {this.renderStepper()}
           </Dialog>
-        }
-      </div>
-    );
+        </div>
+      );
+    } else {
+      return <CircularProgress />
+    }
   }
 }
 
@@ -163,9 +210,9 @@ export default createContainer(() => {
   let handle = Meteor.subscribe('tote.userProfile');
   if (handle.ready()) {
     if (Meteor.userId()) {
-      let currentProfile = UserProfileCollection.find({userId: Meteor.userId()}).fetch();
-      return {currentProfile: currentProfile};
+      let currentProfile = UserProfileCollection.findOne({userId: Meteor.userId()});
+      return {currentProfile: currentProfile, doneLoading: true};
     }
   }
-  return {};
+  return {doneLoading: false};
 }, Recommendations);
