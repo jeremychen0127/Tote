@@ -27,6 +27,10 @@ if (Meteor.isServer) {
 
   FashionItemCollection.attachSchema(FashionItemCollection.schema);
 
+  Meteor.publish("tote.FashionItem", function () {
+    return FashionItemCollection.find({});
+  });
+
   Meteor.methods({
     "tote.FashionItem.addItem": function(url, category) {
       //if (!Meteor.userId()) {
@@ -35,7 +39,7 @@ if (Meteor.isServer) {
       let newItem = {};
       newItem.userId = Meteor.userId();
       newItem.itemUrl = url;
-      newItem.category = category;
+      newItem.category = category;``
       newItem._id = FashionItemCollection.insert(newItem);
     },
     "tote.FashionItem.updateTags":function(tags) {
