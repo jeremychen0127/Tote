@@ -49,14 +49,19 @@ class Recommendations extends Component {
       femaleBags: '',
       femaleCelebrity: '',
       femaleBodyShape: '',
-      femaleShoeType: '',
       currentStep: 0,
       finalStep: -1,
+      recommendedStyle: null,
     };
 
     this.handleQuestionnaireSubmit = this.handleQuestionnaireSubmit.bind(this);
 
-    this.handleQuestionnaireNext = () => this.setState({currentStep: this.state.currentStep + 1});
+    this.handleQuestionnaireNext = () => {
+      if (this.state.currentStep === 0) {
+        Meteor.call("tote.userProfile.updateInfo", this.state.height, this.state.weight, this.state.ethnicity, this.state.size, this.state.age, this.state.gender);
+      }
+      this.setState({currentStep: this.state.currentStep + 1});
+    }
 
     this.handleQuestionnairePrev = () => this.setState({currentStep: this.state.currentStep - 1});
 
@@ -76,9 +81,9 @@ class Recommendations extends Component {
 
     this.handleGenderChange = (event, index, value) => {
       if (value === 'male') {
-        this.setState({finalStep: 7});
+        this.setState({finalStep: 6});
       } else {
-        this.setState({finalStep: 9});
+        this.setState({finalStep: 7});
       }
       this.setState({gender: value});
     }
@@ -104,26 +109,43 @@ class Recommendations extends Component {
     this.handleFemaleBodyShapeChange = (event) => {
         this.setState({femaleBodyShape: event.target.value});
     }
-    this.handleFemaleShoeTypeChange = (event) => {
-        this.setState({femaleShoeType: event.target.value});
-    }
 
     this.isInputValid = () => {
+//      console.log('h: ' + this.state.height > 0);
+//      console.log('w: ' + this.state.weight > 0);
+//      console.log('e: ' + !!this.state.ethnicity);
+//      console.log('s: ' + !!this.state.size);
+//      console.log('a: ' + this.state.age > 0);
+//      console.log('g: ' + !!this.state.gender);
+      console.log('1: ' + !!this.state.femaleEveryday);
+      console.log('2: ' + !!this.state.femaleShoes);
+      console.log('3: ' + !!this.state.femaleLocation);
+      console.log('4: ' + !!this.state.femaleBrunch);
+      console.log('5: ' + !!this.state.femaleBags);
+      console.log('6: ' + !!this.state.femaleCelebrity);
+      console.log('7: ' + !!this.state.femaleBodyShape);
+      console.log('return:' + !!this.state.femaleEveryday &&
+                                      !!this.state.femaleShoes &&
+                                      !!this.state.femaleLocation &&
+                                      !!this.state.femaleBrunch &&
+                                      !!this.state.femaleBags &&
+                                      !!this.state.femaleCelebrity &&
+                                      !!this.state.femaleBodyShape)
+
+//        this.state.height > 0 &&
+//        this.state.weight > 0 &&
+//        !!this.state.ethnicity &&
+//        !!this.state.size &&
+//        this.state.age > 0 &&
+//        !!this.state.gender &&
       return
-        this.state.height > 0 &&
-        this.state.weight > 0 &&
-        !!this.state.ethnicity &&
-        !!this.state.size &&
-        this.state.age > 0 &&
-        !!this.state.gender &&
         !!this.state.femaleEveryday &&
         !!this.state.femaleShoes &&
         !!this.state.femaleLocation &&
         !!this.state.femaleBrunch &&
         !!this.state.femaleBags &&
         !!this.state.femaleCelebrity &&
-        !!this.state.femaleBodyShape &&
-        !!this.state.femaleShoeType;
+        !!this.state.femaleBodyShape;
     }
   }
 
@@ -132,14 +154,23 @@ class Recommendations extends Component {
   }
 
   handleQuestionnaireSubmit() {
-    let chic = 0;
-    let punc = 0;
-    let tomboy = 0;
-    let sophisticated = 0;
-    let sexy = 0;
-    let cute = 0;
-    Meteor.call("tote.userProfile.updateInfo", this.state.height, this.state.weight, this.state.ethnicity, this.state.size, this.state.age, this.state.gender);
-    this.setState({questionnaireOpen: false});
+    let styles = ['chic', 'punc', 'tomboy', 'soph', 'sexy', 'cute'];
+    let counts = [0, 0, 0, 0, 0, 0];
+
+    counts[styles.indexOf(this.state.femaleEveryday)] += 1;
+    counts[styles.indexOf(this.state.femaleShoes)] += 1;
+    counts[styles.indexOf(this.state.femaleLocation)] += 1;
+    counts[styles.indexOf(this.state.femaleBrunch)] += 1;
+    counts[styles.indexOf(this.state.femaleBags)] += 1;
+    counts[styles.indexOf(this.state.femaleCelebrity)] += 1;
+    counts[styles.indexOf(this.state.femaleBodyShape)] += 1;
+
+    let highest = Math.max(...counts);
+    let highestStyle = styles[counts.indexOf(highest)];
+
+    let result = Meteor.call("tote.fashionStyleItem.findItem", highestStyle);
+    Meteor.call("tote.userProfile.updateIsQuestionnaireTaken");
+    this.setState({questionnaireOpen: false, recommendedStyle: result});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -155,7 +186,7 @@ class Recommendations extends Component {
     if (this.state.gender === 'male') {
       numSteps = 7;
     } else if (this.state.gender === 'female') {
-      numSteps = 9;
+      numSteps = 8;
     }
 
     let steps = [];
@@ -211,9 +242,6 @@ class Recommendations extends Component {
       else if (this.state.currentStep == 7) {
         return <FemaleBodyShapeQuestion handleFemaleBodyShapeChange = {this.handleFemaleBodyShapeChange}/>
       }
-      else if (this.state.currentStep == 8) {
-        return <FemaleShoeTypeQuestion handleFemaleShoeTypeChange = {this.handleFemaleShoeTypeChange}/>
-      }
     }
   }
 
@@ -234,7 +262,7 @@ class Recommendations extends Component {
           <FlatButton
             label="Submit"
             primary={true}
-            disabled={!this.isInputValid()}
+            disabled={this.isInputValid()}
             onTouchTap={this.handleQuestionnaireSubmit}
           />,
         ]
@@ -281,6 +309,17 @@ class Recommendations extends Component {
               {this.renderQuestions()}
               {this.renderStepper()}
           </Dialog>
+          <br />
+          {
+            this.state.recommendedStyle ?
+              <div className="center">
+                <img src={this.state.recommendedStyle[0].itemUrl} />
+                <img src={this.state.recommendedStyle[1].itemUrl} />
+                <img src={this.state.recommendedStyle[2].itemUrl} />
+              </div>
+            :
+              ''
+          }
         </div>
       );
     } else {
