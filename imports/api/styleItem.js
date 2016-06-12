@@ -35,7 +35,7 @@ if (Meteor.isServer) {
       // }
       let newItem = {};
       newItem.fashionStyle = fashionStyle;
-      newItem.category =
+      newItem.category = category;
       newItem.itemUrl = url;
       newItem._id = StyleItemCollection.insert(newItem);
     },
