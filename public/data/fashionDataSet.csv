@@ -1,0 +1,42 @@
+gender,height,age,weight,ethnicGroup,size,clothing_style
+RICH_TEXT,INTEGER,INTEGER,INTEGER,RICH_TEXT,RICH_TEXT,RICH_TEXT
+Female,1.61,59,56.9,Caucasian,S,bohemian-chic
+Female,1.44,23,70.8,Caucasian,XS,bohemian-chic
+Female,1.69,27,41.6,Caucasian,S,bohemian-chic
+Female,1.62,23,54.2,African,S,bohemian-chic
+Female,1.55,17,51.2,Latino,XS,Eclectic-Punk
+Female,1.72,58,47.7,East Asian,M,Eclectic-Punk
+Female,1.7,44,89.4,Caucasian,S,Eclectic-Punk
+Female,1.48,57,46.4,Caucasian,XS,Eclectic-Punk
+Female,1.56,51,54.5,African,XS,Tomboy/sporty
+Female,1.79,29,69.2,Latino,M,Tomboy/sporty
+Female,1.71,25,61.3,East Asian,M,Tomboy/sporty
+Female,1.57,38,86.7,South Asian,XS,Tomboy/sporty
+Female,1.49,38,44,Caucasian,XS,Sophisticated 
+Female,1.42,51,71.9,African,XS,Sophisticated 
+Female,1.65,65,67.9,Latino,S,Sophisticated 
+Female,1.56,50,88.9,East Asian,XS,Sophisticated 
+Female,1.58,51,68.5,South Asian,XS,Sexy
+Female,1.43,70,62.4,Caucasian,XS,Sexy
+Female,1.42,55,55.8,African,XS,Sexy
+Female,1.67,30,71.3,Latino,S,Sexy
+Female,1.68,63,81.9,East Asian,S,Artsy-cute
+Female,1.52,49,53.1,South Asian,XS,Artsy-cute
+Female,1.61,41,45.4,Caucasian,S,Artsy-cute
+Female,1.46,16,70.2,African,XS,Artsy-cute
+Male,1.65,65,63.9,Latino,S,Artsy-cute
+Male,1.63,28,73.9,East Asian,S,Preppy
+Male,1.66,60,57.3,South Asian,S,Preppy
+Male,1.77,18,50.4,Caucasian,M,Preppy
+Male,1.84,39,95.9,African,L,Preppy
+Male,1.94,24,76,Latino,XL,Formal
+Male,1.63,23,57.3,East Asian,S,Formal
+Male,1.64,47,78.2,South Asian,S,Formal
+Male,1.66,61,86.7,Caucasian,S,Formal
+Male,1.82,27,76.3,African,L,Indie
+Male,1.69,53,52.7,Latino,S,Indie
+Male,1.77,28,73.7,East Asian,M,Indie
+Male,1.68,55,80.8,South Asian,S,Indie
+Male,1.83,20,84.3,Caucasian,L,Athletic-Casual
+Male,1.94,42,54.6,African,XL,Athletic-Casual
+Male,1.64,40,91.5,Latino,S,Athletic-Casual
