@@ -4,23 +4,32 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { createContainer } from 'meteor/react-meteor-data';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { Random } from 'meteor/random';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 
-import { UserProfileCollection } from '../../api/userProfile';
+import BasicInfoQuestion from '../components/recommendations/BasicInfoQuestion';
+import FemaleBagsQuestion from '../components/recommendations/FemaleBagsQuestion';
+import FemaleBodyShapeQuestion from '../components/recommendations/FemaleBodyShapeQuestion';
+import FemaleBrunchQuestion from '../components/recommendations/FemaleBrunchQuestion';
+import FemaleCelebrityQuestion from '../components/recommendations/FemaleCelebrityQuestion';
+import FemaleEverydayQuestion from '../components/recommendations/FemaleEverydayQuestion';
+import FemaleLocationQuestion from '../components/recommendations/FemaleLocationQuestion';
+import FemaleShoesQuestion from '../components/recommendations/FemaleShoesQuestion';
+import FemaleShoeTypeQuestion from '../components/recommendations/FemaleShoeTypeQuestion';
+import MaleCasualQuestion from '../components/recommendations/MaleCasualQuestion';
+import MaleCologneQuestion from '../components/recommendations/MaleCologneQuestion';
+import MaleDressyQuestion from '../components/recommendations/MaleDressyQuestion';
+import MaleLocationQuestion from '../components/recommendations/MaleLocationQuestion';
+import MalePantsQuestion from '../components/recommendations/MalePantsQuestion';
+import MaleShoesQuestion from '../components/recommendations/MaleShoesQuestion';
 
-const styles = {
-  fieldLabel: {
-    paddingLeft: '0px'
-  }
-};
+
+import { UserProfileCollection } from '../../api/userProfile';
 
 class Recommendations extends Component {
   constructor(props) {
@@ -32,14 +41,20 @@ class Recommendations extends Component {
       ethnicity: '',
       size: '',
       age: -1,
+      gender: '',
       currentStep: 0,
+      finalStep: 0,
     };
+
+    this.handleQuestionnaireSubmit = this.handleQuestionnaireSubmit.bind(this);
+
+    this.handleQuestionnaireNext = () => this.setState({currentStep: this.state.currentStep + 1});
+
+    this.handleQuestionnairePrev = () => this.setState({currentStep: this.state.currentStep - 1});
 
     this.handleQuestionnaireOpen = () => this.setState({questionnaireOpen: true});
 
     this.handleQuestionnaireClose = () => this.setState({questionnaireOpen: false});
-
-    this.handleQuestionnaireSubmit = this.handleQuestionnaireSubmit.bind(this);
 
     this.handleHeightChange = (event) => this.setState({height: Number(event.target.value)});
 
@@ -51,8 +66,17 @@ class Recommendations extends Component {
 
     this.handleAgeChange = (event) => this.setState({age: Number(event.target.value)});
 
+    this.handleGenderChange = (event, index, value) => {
+      if (value === 'male') {
+        this.setState({finalStep: 0});
+      } else {
+        this.setState({finalStep: 0});
+      }
+      this.setState({gender: value});
+    }
+
     this.isInputValid = () => {
-      return this.state.height > 0 && this.state.weight > 0 && !!this.state.ethnicity && !!this.state.size && this.state.age > 0;
+      return this.state.height > 0 && this.state.weight > 0 && !!this.state.ethnicity && !!this.state.size && this.state.age > 0 && !!this.state.gender;
     }
   }
 
@@ -61,19 +85,23 @@ class Recommendations extends Component {
   }
 
   handleQuestionnaireSubmit() {
-    Meteor.call("tote.userProfile.updateInfo", this.state.height, this.state.weight, this.state.ethnicity, this.state.size, this.state.age);
+    Meteor.call("tote.userProfile.updateInfo", this.state.height, this.state.weight, this.state.ethnicity, this.state.size, this.state.age, this.state.gender);
     this.setState({questionnaireOpen: false});
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({questionnaireOpen: !nextProps.currentProfile.isQuestionnaireTaken});
+    if (nextProps.currentProfile) {
+      this.setState({questionnaireOpen: !nextProps.currentProfile.isQuestionnaireTaken});
+    } else {
+      this.setState({questionnaireOpen: false});
+    }
   }
 
   renderSteps() {
     let numSteps = 0;
-    if (this.props.currentProfile.gender === 'male') {
-      numSteps = 6;
-    } else if (this.props.currentProfile.gender === 'female') {
+    if (this.state.gender === 'male') {
+      numSteps = 7;
+    } else if (this.state.gender === 'female') {
       numSteps = 9;
     }
 
@@ -81,7 +109,7 @@ class Recommendations extends Component {
 
     while (numSteps) {
       steps.push(
-        <Step>
+        <Step key={Random.id()}>
           <StepLabel></StepLabel>
         </Step>
       );
@@ -99,20 +127,56 @@ class Recommendations extends Component {
     );
   }
 
+  renderQuestions() {
+    if (this.state.currentStep === 0) {
+      return <BasicInfoQuestion
+        handleHeightChange={this.handleHeightChange}
+        handleWeightChange={this.handleWeightChange}
+        handleSizeChange={this.handleSizeChange}
+        handleEthnicityChange={this.handleEthnicityChange}
+        handleAgeChange={this.handleAgeChange}
+        handleGenderChange={this.handleGenderChange}/>
+    } else if (this.state.gender === 'female') {
+      if (this.state.currentStep === 1) {
+        return <FemaleEverydayQuestion />
+      }
+    }
+  }
+
   render() {
-    const actions = [
-      <FlatButton
-        label="Later"
-        primary={true}
-        onTouchTap={this.handleQuestionnaireClose}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        disabled={!this.isInputValid()}
-        onTouchTap={this.handleQuestionnaireSubmit}
-      />,
-    ];
+    const actions =
+      this.state.currentStep === this.state.finalStep ?
+        [
+          <FlatButton
+            label="Later"
+            primary={true}
+            onTouchTap={this.handleQuestionnaireClose}
+          />,
+          <FlatButton
+            label="Submit"
+            primary={true}
+            disabled={!this.isInputValid()}
+            onTouchTap={this.handleQuestionnaireSubmit}
+          />,
+        ]
+      :
+        [
+          <FlatButton
+            label="Later"
+            primary={true}
+            onTouchTap={this.handleQuestionnaireClose}
+          />,
+          <FlatButton
+            label="Back"
+            primary={true}
+            onTouchTap={this.handleQuestionnairePrev}
+          />,
+          <FlatButton
+            label="Next"
+            primary={true}
+            onTouchTap={this.handleQuestionnaireNext}
+          />,
+        ];
 
     if (this.props.doneLoading) {
       return (
@@ -135,69 +199,16 @@ class Recommendations extends Component {
             modal={true}
             open={this.state.questionnaireOpen}
             autoScrollBodyContent={true}>
-              <br />
-              <div className="row">
-                <div className="col m6">
-                  <label htmlFor="height" className="col m6 questionnaireLabel" style={styles.fieldLabel}>Your Height</label>
-                  <input placeholder="e.g. 170" id="height" type="number" class="validate" onChange={this.handleHeightChange}/>
-                </div>
-                <div className="col m6">
-                  <label htmlFor="weight" className="col m6 questionnaireLabel" style={styles.fieldLabel}>Your Weight</label>
-                  <input placeholder="e.g. 60" id="weight" type="number" class="validate" onChange={this.handleWeightChange}/>
-                </div>
-              </div>
-              <div className="row">
-
-                <label htmlFor="size" className="col m6 questionnaireLabel">Shirt Size</label>
-                <label htmlFor="ethnicity" className="col m6 questionnaireLabel">Ethnicity</label>
-                <div>
-                  <DropDownMenu
-                    className="col m6"
-                    anchorOrigin={{vertical: 'top'}}
-                    value={this.state.size}
-                    onChange={this.handleSizeChange}
-                    autoWidth={false}>
-                      <MenuItem value='xxs' primaryText="XXS" />
-                      <MenuItem value='xs' primaryText="XS" />
-                      <MenuItem value='s' primaryText="S" />
-                      <MenuItem value='m' primaryText="M" />
-                      <MenuItem value='l' primaryText="L" />
-                      <MenuItem value='xl' primaryText="XL" />
-                      <MenuItem value='xxl' primaryText="XXL" />
-                  </DropDownMenu>
-                </div>
-                <div>
-                  <DropDownMenu
-                    className="col m6"
-                    anchorOrigin={{vertical: 'top'}}
-                    value={this.state.ethnicity}
-                    onChange={this.handleEthnicityChange}
-                    autoWidth={false}>
-                      <MenuItem value='white' primaryText="White" />
-                      <MenuItem value='black' primaryText="Black" />
-                      <MenuItem value='chinese' primaryText="Chinese" />
-                      <MenuItem value='japanese' primaryText="Japanese" />
-                      <MenuItem value='korean' primaryText="Korean" />
-                      <MenuItem value='indian' primaryText="Indian" />
-                      <MenuItem value='latino' primaryText="Latino" />
-                      <MenuItem value='arab' primaryText="Arab" />
-                      <MenuItem value='other' primaryText="Other" />
-                  </DropDownMenu>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col m6">
-                  <label htmlFor="age" className="col m6 questionnaireLabel" style={styles.fieldLabel}>Age</label>
-                  <input placeholder="e.g. 25" id="weight" type="number" class="validate" onChange={this.handleAgeChange}/>
-                </div>
-              </div>
-
-              {this.renderStepper()}
+              {this.renderQuestions()}
           </Dialog>
         </div>
       );
     } else {
-      return <CircularProgress />
+      return (
+        <div className="center">
+          <CircularProgress />
+        </div>
+      );
     }
   }
 }
