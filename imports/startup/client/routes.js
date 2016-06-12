@@ -7,6 +7,7 @@ import { WelcomeLayout } from '../../ui/layouts/WelcomeLayout';
 import Welcome from '../../ui/pages/Welcome';
 import Closet from '../../ui/pages/Closet';
 import Recommendations from '../../ui/pages/Recommendations';
+import AWSDemo from '../../ui/pages/AWSDemo';
 
 FlowRouter.route('/', {
   name: 'index',
@@ -26,6 +27,13 @@ FlowRouter.route('/recommendations', {
   name: 'recommendations',
   action() {
     mount(Layout, {content: <Recommendations />});
+  }
+});
+
+FlowRouter.route('/AWSDemo', {
+  name: 'AWSDemo',
+  action() {
+    mount(Layout, {content: <AWSDemo />});
   }
 });
 

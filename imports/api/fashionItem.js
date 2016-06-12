@@ -28,14 +28,13 @@ if (Meteor.isServer) {
   FashionItemCollection.attachSchema(FashionItemCollection.schema);
 
   Meteor.methods({
-    "tote.FashionItem.addItem": function(userId,url) {
+    "tote.FashionItem.addItem": function(url) {
       //if (!Meteor.userId()) {
       //     throw new Meteor.Error('unauthorized');
       // }
       let newItem = {};
-      newItem.userId = userId;
+      newItem.userId = Meteor.userId();
       newItem.itemUrl = url;
-
       newItem._id = FashionItemCollection.insert(newItem);
     },
     "tote.FashionItem.updateTags":function(tags) {
@@ -45,6 +44,14 @@ if (Meteor.isServer) {
           throw new Meteor.Error(error);
         }
       });
+    },
+    "tote.FashionItem.findItem":function() {
+
+      var result = FashionItemCollection.find({userId : Meteor.userId()}).fetch();
+      console.log(result);
+      return result;
+
+
     }
 
 
